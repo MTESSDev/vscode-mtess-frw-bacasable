@@ -64,7 +64,7 @@ export const renderPlaceholder = () => `
   </head>
   <body class="flex">
     <div class="flex top">
-      <div class="instructions">Confifgure Live Frame in your User or Workspace Settings, e.g.</div>
+      <div class="instructions">Pour utiliser l'outil MTESS - Formulaires - Bac-à-sable il faut configurer quelques paramètres, e.g.</div>
       <pre>{
   "mtessFrwBacasable.url": "http://localhost:3000",
   "mtessFrwBacasable.title": "Local Development",
