@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand(
     "vscode-mtess-frw-bacasable.open",
     () => {
-      const config = vscode.workspace.getConfiguration("mtessFrw");
+      const config = vscode.workspace.getConfiguration("mtessFrwBacasable");
       const url = config.get<string>("url");
       const title = config.get<string>("title") || url || "FRW Bac-a-sable";
       const pane = config.get<string>("pane");

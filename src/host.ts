@@ -16,11 +16,11 @@ export const renderHost = (url: string, data: string) => `
   </head>
   <body>
   <form action="${url}" target="frw-iframe" id="form" method="post">
-    <input type="text" name="render" id="render" value="${data}">
-    <input type="submit" value="post">
+    <input type="hidden" name="render" id="render" value="${data}">
+    <input type="hidden" name="currentCursorLine" id="currentCursorLine" value="-1">
   </form>
 
-    <iframe name="frw-iframe" src="${url}"></iframe>
+    <iframe name="frw-iframe" src="about:blank"></iframe>
     <script>
     
       document.getElementById("form").submit();
