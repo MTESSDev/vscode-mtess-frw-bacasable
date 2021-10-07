@@ -1,11 +1,11 @@
 {
-  "name": "vscode-live-frame",
-  "displayName": "Live Frame",
-  "publisher": "jevakallio",
-  "repository": "https://github.com/jevakallio/vscode-live-frame",
+  "name": "vscode-mtess-frw-bacasable",
+  "displayName": "MTESS Formulaires bac-a-sable",
+  "publisher": "mtess",
+  "repository": "",
   "description": "Live preview your web application inside VS Code",
   "icon": "docs/icon-128.png",
-  "version": "0.1.1",
+  "version": "0.0.1",
   "engines": {
     "vscode": "^1.47.0"
   },
@@ -13,30 +13,30 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-live-frame.open"
+    "onCommand:vscode-mtess-frw-bacasable.open"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "vscode-live-frame.open",
-        "title": "Live Frame: Open"
+        "command": "vscode-mtess-frw-bacasable.open",
+        "title": "MTESS - Ouvrir bac-a-sable formulaire"
       }
     ],
     "configuration": {
-      "title": "Live Frame",
+      "title": "MTESS Formulaires",
       "properties": {
-        "liveFrame.url": {
+        "mtessFrwBacasable.url": {
           "type": "string",
           "default": null,
           "description": "URL to open in the Live Frame"
         },
-        "liveFrame.title": {
+        "mtessFrwBacasable.title": {
           "type": "string",
           "default": null,
           "description": "Title to display in the Live Frame tab"
         },
-        "liveFrame.pane": {
+        "mtessFrwBacasable.pane": {
           "type": "string",
           "default": "Beside",
           "enum": [

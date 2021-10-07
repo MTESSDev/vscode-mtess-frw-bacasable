@@ -10,8 +10,6 @@ You're developing a web application, and you've got some kind of a live/hot relo
 
 Or, perhaps, you're streaming or recording a screen cast, and you just want everything nicely in one window. Whatever your reasons, we're not here to judge.
 
-![Demo](docs/demo.gif)
-
 ## How to use it
 
 1. Install **Live Frame** from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=jevakallio.vscode-live-frame).
@@ -26,13 +24,13 @@ Add the following to your User or Workspace settings. Given that your app's deve
 ```js
 {
   // Required: The website to display
-  "liveFrame.url": "http://localhost:3000",
+  "mtessFrwBacasable.url": "http://localhost:3000",
 
   // Optional: Title for the pane tab heading
-  "liveFrame.title": "Local Development",
+  "mtessFrwBacasable.title": "Local Development",
 
   // Optional: Which pane to open the frame in
-  "liveFrame.pane": "Beside"
+  "mtessFrwBacasable.pane": "Beside"
 }
 ```
 

@@ -1,4 +1,5 @@
-export const renderHost = (url: string) => `
+
+export const renderHost = (url: string, data: string) => `
 <!DOCTYPE html>
 <html>
   <head>
@@ -14,11 +15,19 @@ export const renderHost = (url: string) => `
     </style>
   </head>
   <body>
-    <iframe src="${url}"></iframe>
+  <form action="${url}" target="frw-iframe" id="form" method="post">
+    <input type="text" name="render" id="render" value="${data}">
+    <input type="submit" value="post">
+  </form>
+
+    <iframe name="frw-iframe" src="${url}"></iframe>
     <script>
+    
+      document.getElementById("form").submit();
       window.addEventListener("message", (e) => {
         window.dispatchEvent(new KeyboardEvent('keydown', JSON.parse(e.data)));
       }, false);
+
     </script>
   </body>
 </html>
@@ -55,11 +64,11 @@ export const renderPlaceholder = () => `
   </head>
   <body class="flex">
     <div class="flex top">
-      <div class="instructions">Configure Live Frame in your User or Workspace Settings, e.g.</div>
+      <div class="instructions">Confifgure Live Frame in your User or Workspace Settings, e.g.</div>
       <pre>{
-  "liveFrame.url": "http://localhost:3000",
-  "liveFrame.title": "Local Development",
-  "liveFrame.pane": "Beside"
+  "mtessFrwBacasable.url": "http://localhost:3000",
+  "mtessFrwBacasable.title": "Local Development",
+  "mtessFrwBacasable.pane": "Beside"
 }</pre>
     </div>
     <div class="flex illustration">
