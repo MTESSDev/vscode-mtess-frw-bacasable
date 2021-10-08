@@ -23,18 +23,26 @@
         "title": "MTESS - Ouvrir bac-a-sable formulaire"
       }
     ],
+    "keybindings": [
+      {
+          "command": "vscode-mtess-frw-bacasable.open",
+          "when": "resourceFilename =~ /\\.form\\.yml/",
+          "key": "ctrl+s",
+          "mac": "cmd+s"
+      }
+    ],
     "configuration": {
       "title": "MTESS Formulaires",
       "properties": {
         "mtessFrwBacasable.url": {
           "type": "string",
-          "default": null,
-          "description": "URL to open in the Live Frame"
+          "default": "https://master-www.extra-frw.sa.mes.reseau.intra/Form/1/render",
+          "description": "URL à utiliser pour produire le rendu."
         },
-        "mtessFrwBacasable.title": {
-          "type": "string",
-          "default": null,
-          "description": "Title to display in the Live Frame tab"
+        "mtessFrwBacasable.showAll": {
+          "type": "boolean",
+          "default": true,
+          "description": "Afficher tout (désactiver les v-if)"
         },
         "mtessFrwBacasable.pane": {
           "type": "string",
@@ -81,7 +89,7 @@
     "@types/glob": "^7.1.1",
     "@types/mocha": "^7.0.2",
     "@types/node": "^13.11.0",
-    "@types/vscode": "^1.60.2",
+    "@types/vscode": "^1.60.0",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "eslint": "^6.8.0",

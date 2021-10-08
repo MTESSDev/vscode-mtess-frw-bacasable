@@ -1,5 +1,5 @@
 
-export const renderHost = (url: string, data: string) => `
+export const renderHost = (url: string, data: string, breadcrumb: string, showAll: boolean) => `
 <!DOCTYPE html>
 <html>
   <head>
@@ -16,8 +16,9 @@ export const renderHost = (url: string, data: string) => `
   </head>
   <body>
   <form action="${url}" target="frw-iframe" id="form" method="post">
+    <input type="hidden" name="ShowAll" value="${showAll}">
     <input type="hidden" name="render" id="render" value="${data}">
-    <input type="hidden" name="currentCursorLine" id="currentCursorLine" value="-1">
+    <input type="hidden" name="breadcrumb" id="breadcrumb" value="${breadcrumb}">
   </form>
 
     <iframe name="frw-iframe" src="about:blank"></iframe>
