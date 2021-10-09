@@ -16,8 +16,7 @@ export const renderHost = (url: string, data: string, breadcrumb: string, showAl
   </head>
   <body>
   <form action="${url}" target="frw-iframe" id="form" method="post">
-    <input type="hidden" name="ShowAll" value="${showAll}">
-    <input type="hidden" name="render" id="render" value="${data}">
+    <input type="hidden" name="content" id="content" value="${data}">
     <input type="hidden" name="breadcrumb" id="breadcrumb" value="${breadcrumb}">
   </form>
 

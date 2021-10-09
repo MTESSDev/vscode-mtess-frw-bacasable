@@ -2,10 +2,10 @@
   "name": "vscode-mtess-frw-bacasable",
   "displayName": "MTESS Formulaires bac-a-sable",
   "publisher": "mtess",
-  "repository": "",
-  "description": "Live preview your web application inside VS Code",
+  "repository": "https://github.com/TrucsPES/vscode-mtess-frw-bacasable",
+  "description": "Configurez vos formulaires avec l'outil du MTESS en temps réel!",
   "icon": "docs/icon-128.png",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -36,7 +36,7 @@
       "properties": {
         "mtessFrwBacasable.url": {
           "type": "string",
-          "default": "https://master-www.extra-frw.sa.mes.reseau.intra/Form/1/render",
+          "default": null,
           "description": "URL à utiliser pour produire le rendu."
         },
         "mtessFrwBacasable.showAll": {
