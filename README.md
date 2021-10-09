@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/jevakallio/vscode-live-frame/blob/master/docs/icon-400.png?raw=true" width=200></p>
+<p align="center"><img src="https://github.com/TrucsPES/vscode-mtess-frw-bacasable/blob/master/docs/icon-400.png?raw=true" width=200></p>
 <h1 align="center">MTESS Bac-a-sable des formulaires</h1>
 <p align="center">
 <strong>Testez votre configuration des formulaires <i>dans</i> VS Code.</strong>
