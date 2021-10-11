@@ -13,9 +13,9 @@
 4. Faites (`Ctrl`+`S`) pour enregistrer et prévisualiser
 4. Suivez les [instructions de configuration](#extension-settings).
 
-### Extension Settings
+### Paramètres de l'extension
 
-Add the following to your User or Workspace settings. Given that your app's development URL is probably project specific, Workspace settings may make more sense.
+Ajouter ces configuration dans le fichier de configuration de votre VS code ou via les paramètres dans les préférences.
 
 ```js
 {
