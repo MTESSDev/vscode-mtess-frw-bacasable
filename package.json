@@ -5,7 +5,7 @@
   "repository": "https://github.com/TrucsPES/vscode-mtess-frw-bacasable",
   "description": "Configurez vos formulaires avec l'outil du MTESS en temps réel!",
   "icon": "docs/icon-128.png",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -25,10 +25,10 @@
     ],
     "keybindings": [
       {
-          "command": "vscode-mtess-frw-bacasable.open",
-          "when": "resourceFilename =~ /\\.form\\.yml/",
-          "key": "ctrl+s",
-          "mac": "cmd+s"
+        "command": "vscode-mtess-frw-bacasable.open",
+        "when": "resourceFilename =~ /\\.form\\.yml/",
+        "key": "ctrl+s",
+        "mac": "cmd+s"
       }
     ],
     "configuration": {
@@ -38,11 +38,6 @@
           "type": "string",
           "default": null,
           "description": "URL à utiliser pour produire le rendu."
-        },
-        "mtessFrwBacasable.showAll": {
-          "type": "boolean",
-          "default": true,
-          "description": "Afficher tout (désactiver les v-if)"
         },
         "mtessFrwBacasable.pane": {
           "type": "string",

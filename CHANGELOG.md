@@ -1,5 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## [0.0.3]
 
-- Initial release
+- Première version publique
+- Correction de la documentation
