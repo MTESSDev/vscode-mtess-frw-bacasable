@@ -84,7 +84,8 @@ export function activate(context: vscode.ExtensionContext) {
             } else {
               currentPanel.webview.html = url ? renderHost(url, b.toString('base64'), breadcrumb, showAll) : renderPlaceholder();
 
-              currentPanel.reveal(undefined, true);
+              // Reveal ne fonctionne plus avec VS 1.63
+              // currentPanel.reveal(undefined, true);
             }
 
             //vscode.window.activeTextEditor = editor;
