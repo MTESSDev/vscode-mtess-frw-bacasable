@@ -31,7 +31,7 @@ Ajouter ces configuration dans le fichier de configuration de votre VS code ou v
 
 Si quelque chose cloche, il est possible d'ouvrir le panneau de développement de Chrome avec (`Cmd`+`Shift`+`P`) et voir la console.
 
-### Développement local
+### Développement local (pour les développeurs au MESS seulement)
 
 Installez les dépendances avec `yarn`, puis démarez le projet en debug `Run > Start Debugging` dans VS Code.
 
