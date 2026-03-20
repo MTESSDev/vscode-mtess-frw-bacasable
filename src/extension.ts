@@ -50,7 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
             }
 
             const text = document.getText();
-            let b: Buffer = Buffer.from(text, 'utf8');
+            const base64Text = btoa(unescape(encodeURIComponent(text)));
 
             if (!currentPanel) {
 
@@ -72,17 +72,17 @@ export function activate(context: vscode.ExtensionContext) {
                 const showAll = config.get<boolean>("showAll") || true;
 
                 panel.webview.html = newUrl
-                  ? renderHost(newUrl, b.toString('base64'), breadcrumb, showAll)
+                  ? renderHost(newUrl, base64Text, breadcrumb, showAll)
                   : renderPlaceholder();
-           
+
               });
 
-              panel.webview.html = url ? renderHost(url, b.toString('base64'), breadcrumb, showAll) : renderPlaceholder();
+              panel.webview.html = url ? renderHost(url, base64Text, breadcrumb, showAll) : renderPlaceholder();
               panel.onDidDispose(() => {
                 currentPanel = undefined;
               });
             } else {
-              currentPanel.webview.html = url ? renderHost(url, b.toString('base64'), breadcrumb, showAll) : renderPlaceholder();
+              currentPanel.webview.html = url ? renderHost(url, base64Text, breadcrumb, showAll) : renderPlaceholder();
 
               // Reveal ne fonctionne plus avec VS 1.63
               // currentPanel.reveal(undefined, true);
