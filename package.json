@@ -1,13 +1,13 @@
 {
   "name": "vscode-mtess-frw-bacasable",
-  "displayName": "MTESS - Formulaires bac-a-sable",
+  "displayName": "MTESS - Formulaires bac à sable",
   "publisher": "mtess",
-  "repository": "https://github.com/TrucsPES/vscode-mtess-frw-bacasable",
+  "repository": "https://github.com/MTESSDev/vscode-mtess-frw-bacasable",
   "description": "Configurez vos formulaires avec l'outil du MTESS en temps réel!",
   "icon": "docs/icon-128.png",
-  "version": "0.0.6",
+  "version": "1.0.3",
   "engines": {
-    "vscode": "^1.60.0"
+    "vscode": "^1.101.0"
   },
   "categories": [
     "Other"
@@ -25,7 +25,7 @@
     "commands": [
       {
         "command": "vscode-mtess-frw-bacasable.open",
-        "title": "FRW - Ouvrir bac-a-sable formulaire"
+        "title": "FRW - Ouvrir bac à sable formulaire"
       }
     ],
     "keybindings": [

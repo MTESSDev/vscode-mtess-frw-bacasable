@@ -1,16 +1,38 @@
 
 export const renderHost = (url: string, data: string, breadcrumb: string, showAll: boolean) => `
 <!DOCTYPE html>
+<!-- ${Date.now()} -->
 <html>
   <head>
     <style>
-      html, body, iframe { 
-        margin: 0; 
-        padding: 0; 
-        border: 0; 
-        height: 100vh; 
-        width: 100vw; 
+      html, body, iframe {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        height: 100vh;
+        width: 100vw;
         overflow: hidden;
+      }
+      #error-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--vscode-editor-background, #1e1e1e);
+        color: var(--vscode-editor-foreground, #ccc);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        font-family: sans-serif;
+      }
+      #error-overlay button {
+        padding: 0.5rem 1.5rem;
+        cursor: pointer;
+        background: var(--vscode-button-background, #0e639c);
+        color: var(--vscode-button-foreground, #fff);
+        border: none;
+        border-radius: 2px;
+        font-size: 13px;
       }
     </style>
   </head>
@@ -20,10 +42,44 @@ export const renderHost = (url: string, data: string, breadcrumb: string, showAl
     <input type="hidden" name="breadcrumb" id="breadcrumb" value="${breadcrumb}">
   </form>
 
-    <iframe name="frw-iframe" src="about:blank"></iframe>
+    <iframe name="frw-iframe" id="frw-iframe" src="about:blank"></iframe>
+    <div id="error-overlay">
+      <span id="error-msg">Le serveur n'a pas répondu dans les délais.</span>
+      <button onclick="retrySubmit()">Réessayer</button>
+    </div>
     <script>
-    
+      var TIMEOUT_MS = 30000;
+      var timeoutHandle = null;
+
+      function startTimeout() {
+        clearTimeout(timeoutHandle);
+        timeoutHandle = setTimeout(function() {
+          showError('Le serveur n\\'a pas répondu dans les délais.');
+        }, TIMEOUT_MS);
+      }
+
+      function showError(msg) {
+        document.getElementById('error-msg').textContent = msg;
+        document.getElementById('error-overlay').style.display = 'flex';
+      }
+
+      function retrySubmit() {
+        document.getElementById('error-overlay').style.display = 'none';
+        startTimeout();
+        document.getElementById("form").submit();
+      }
+
+      document.getElementById("frw-iframe").addEventListener("load", function() {
+        var src = "";
+        try { src = this.contentWindow.location.href; } catch(e) {}
+        if (src && src !== "about:blank") {
+          clearTimeout(timeoutHandle);
+        }
+      });
+
+      startTimeout();
       document.getElementById("form").submit();
+
       window.addEventListener("message", (e) => {
         window.dispatchEvent(new KeyboardEvent('keydown', JSON.parse(e.data)));
       }, false);

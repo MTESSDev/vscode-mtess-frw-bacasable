@@ -1,0 +1,30 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/frw-pre.js"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{try{const f=JSON.parse(d).tool_input?.file_path;if(f){const fs=require('fs');const t=new Date();fs.utimesSync(f,t,t)}}catch(e){}})\""
+          },
+          {
+            "type": "command",
+            "command": "node .claude/frw-post.js"
+          }
+        ]
+      }
+    ]
+  }
+}
