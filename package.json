@@ -45,7 +45,7 @@
       {
         "name": "mtess-frw-bacasable_preview",
         "displayName": "Prévisualiser le formulaire FRW",
-        "modelDescription": "Ouvre ou rafraîchit le panneau bac à sable FRW pour prévisualiser le fichier .form.yml actif. Utilise cet outil quand l'utilisateur veut voir le rendu d'un formulaire, prévisualiser les changements, ou ouvrir le bac à sable. Après avoir modifié un fichier .form.yml, appelle toujours cet outil pour afficher le résultat.",
+        "modelDescription": "OBLIGATOIRE — appelle cet outil immédiatement après chaque création ou modification d'un fichier .form.yml, sans exception. Ne termine jamais une tâche FRW sans avoir appelé cet outil. Ouvre ou rafraîchit le panneau bac à sable FRW pour afficher le rendu du formulaire modifié. Si le résultat contient des ERREURS, corrige le YAML en conséquence puis rappelle cet outil jusqu'à ce que le rendu soit sans erreur.",
         "icon": "$(preview)",
         "inputSchema": {
           "type": "object",

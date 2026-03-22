@@ -210,10 +210,12 @@ form:
     fr: Nom de famille
     en: Last name
   inputmode: text           # text | numeric | email | tel | url | search
-  max: 100                  # Longueur maximale
   pattern: "[A-Za-z]+"     # Regex de validation
   value: "valeur par défaut"
   v-else-value: "valeur si v-if est faux"
+  validations: 
+    min: 2,length   # texte d'une longeur minimale de 2 caractères
+    max: 5,length   # texte d'une longeur maximal de 5 caractères
 ```
 
 ### `textarea` — Zone de texte multiligne
@@ -223,8 +225,12 @@ form:
   label:
     fr: Description
     en: Description
-  max: 500
-  limit: true               # Affiche compteur de caractères
+  validations: 
+    max: 200    # limite de caractères validée
+  additionals:
+    max-caracteres: 200   # compteur de caractères restants
+    hauteur-automatique: true  # permet de mettre une zone flexible
+    rows: 10   # quand le contenu utilisateur attendu est grand on précise le nombre de lignes
 ```
 
 ### `radio` — Boutons radio
@@ -275,8 +281,6 @@ form:
   name: dateNaissance
   label:
     fr: Date de naissance
-  min: "1900-01-01"
-  max: "{{today}}"
   validations:
     avant: "2020-01-01"   # La date doit être avant cette date
     apres: "1900-01-01"   # La date doit être après cette date
@@ -393,7 +397,9 @@ form:
     en: Attachment
   validations:
     mime: application/pdf,image/jpeg,image/png
-  max: 5242880              # Taille max en octets (5 Mo)
+    max: 2   # max de fichiers dans le document 
+  additionals:
+    multiple: true   # ajouter plusieurs fichiers d'un même document             
   # Métadonnées (récupérées dans transmission)
   # Ajouter des champs dans le même groupe pour créer des métadonnées auto
 ```
@@ -404,7 +410,8 @@ form:
   name: documentUlterieur
   label:
     fr: Document à fournir ultérieurement
-    en: Document to provide later
+    en: Document to provide late
+  # même attributs que le customfile
 ```
 
 ### `infosBancaires` — Dépôt direct

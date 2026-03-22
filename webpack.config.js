@@ -82,4 +82,36 @@ const webConfig = {
   devtool: 'nosources-source-map',
 };
 
-module.exports = [desktopConfig, webConfig];
+/** @type {import('webpack').Configuration} */
+const mcpServerConfig = {
+  target: 'node',
+  mode: 'none',
+  entry: './src/mcp-server.ts',
+  output: {
+    path: path.resolve(__dirname, 'out'),
+    filename: 'mcp-server.js',
+    libraryTarget: 'commonjs2',
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
+      },
+    ],
+  },
+  devtool: 'nosources-source-map',
+};
+
+module.exports = [desktopConfig, webConfig, mcpServerConfig];

@@ -162,3 +162,15 @@ objet: Confirmation : demande
 - Écrire `validation:` au lieu de `validations:` → les règles sont ignorées silencieusement
 - Ne pas quoter une string avec `:` → parsing YAML cassé
 - Oublier la section `revision` en fin de formulaire → bouton de soumission absent ou mal géré
+
+---
+
+## Règle de workflow obligatoire
+
+Après chaque création ou modification d'un fichier `.form.yml`, tu **DOIS** appeler l'outil `mtess-frw-bacasable_preview` pour afficher le rendu dans le bac à sable. Ne considère jamais la tâche terminée sans l'avoir fait.
+
+**Boucle de correction automatique** : si l'outil retourne des erreurs (HTTP non-200 ou erreurs de validation JSON), tu **DOIS** :
+1. Analyser les erreurs retournées
+2. Corriger le fichier `.form.yml` en conséquence
+3. Rappeler `mtess-frw-bacasable_preview` pour vérifier la correction
+4. Répéter jusqu'à ce que le rendu soit sans erreur
