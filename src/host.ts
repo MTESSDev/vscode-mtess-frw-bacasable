@@ -13,19 +13,30 @@ export const renderHost = (url: string, data: string, breadcrumb: string, showAl
         width: 100vw;
         overflow: hidden;
       }
-      #error-overlay {
-        display: none;
+      #loading-overlay {
         position: fixed;
         inset: 0;
+        z-index: 10;
         background: var(--vscode-editor-background, #1e1e1e);
         color: var(--vscode-editor-foreground, #ccc);
+        display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 1rem;
+        gap: 0.75rem;
         font-family: sans-serif;
+        font-size: 13px;
       }
-      #error-overlay button {
+      .spinner {
+        width: 24px;
+        height: 24px;
+        border: 2px solid var(--vscode-editor-foreground, #ccc);
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .vscode-btn {
         padding: 0.5rem 1.5rem;
         cursor: pointer;
         background: var(--vscode-button-background, #0e639c);
@@ -33,6 +44,10 @@ export const renderHost = (url: string, data: string, breadcrumb: string, showAl
         border: none;
         border-radius: 2px;
         font-size: 13px;
+        font-family: sans-serif;
+      }
+      .vscode-btn:hover {
+        background: var(--vscode-button-hoverBackground, #1177bb);
       }
     </style>
   </head>
@@ -43,41 +58,36 @@ export const renderHost = (url: string, data: string, breadcrumb: string, showAl
   </form>
 
     <iframe name="frw-iframe" id="frw-iframe" src="about:blank"></iframe>
-    <div id="error-overlay">
-      <span id="error-msg">Le serveur n'a pas répondu dans les délais.</span>
-      <button onclick="retrySubmit()">Réessayer</button>
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <span>Chargement…</span>
     </div>
     <script>
       var TIMEOUT_MS = 30000;
       var timeoutHandle = null;
 
-      function startTimeout() {
+      function onLoaded() {
         clearTimeout(timeoutHandle);
-        timeoutHandle = setTimeout(function() {
-          showError('Le serveur n\\'a pas répondu dans les délais.');
-        }, TIMEOUT_MS);
+        document.getElementById('loading-overlay').style.display = 'none';
       }
 
-      function showError(msg) {
-        document.getElementById('error-msg').textContent = msg;
-        document.getElementById('error-overlay').style.display = 'flex';
+      function onTimeout() {
+        document.getElementById('loading-overlay').innerHTML =
+          '<span>Le serveur n\\'a pas répondu.</span>' +
+          '<button class="vscode-btn" onclick="retry()">R\u00e9essayer</button>';
       }
 
-      function retrySubmit() {
-        document.getElementById('error-overlay').style.display = 'none';
-        startTimeout();
+      function retry() {
+        document.getElementById('loading-overlay').innerHTML =
+          '<div class="spinner"></div><span>Chargement\u2026</span>';
+        clearTimeout(timeoutHandle);
+        timeoutHandle = setTimeout(onTimeout, TIMEOUT_MS);
         document.getElementById("form").submit();
       }
 
-      document.getElementById("frw-iframe").addEventListener("load", function() {
-        var src = "";
-        try { src = this.contentWindow.location.href; } catch(e) {}
-        if (src && src !== "about:blank") {
-          clearTimeout(timeoutHandle);
-        }
-      });
+      document.getElementById("frw-iframe").addEventListener("load", onLoaded);
 
-      startTimeout();
+      timeoutHandle = setTimeout(onTimeout, TIMEOUT_MS);
       document.getElementById("form").submit();
 
       window.addEventListener("message", (e) => {
