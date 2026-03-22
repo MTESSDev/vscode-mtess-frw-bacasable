@@ -1,6 +1,42 @@
 import * as vscode from "vscode";
 import { renderHost, renderPlaceholder } from "./host";
 import { getColumnFromPane } from "./pane";
+import claudeMdContent from '../skills/CLAUDE.md';
+import skillContent from '../skills/FRW/SKILL.md';
+import refForm from '../skills/FRW/references/form.md';
+import refBind from '../skills/FRW/references/bind.md';
+import refTransmission from '../skills/FRW/references/transmission.md';
+
+const REFERENCES: Record<string, string> = {
+  'references/form.md': refForm,
+  'references/bind.md': refBind,
+  'references/transmission.md': refTransmission,
+};
+
+async function deploySkill() {
+  const folders = vscode.workspace.workspaceFolders;
+  if (!folders) { return; }
+
+  const skillsDir = vscode.Uri.joinPath(folders[0].uri, '.claude', 'skills');
+
+  const write = async (name: string, content: string) => {
+    const uri = vscode.Uri.joinPath(skillsDir, name);
+    await vscode.workspace.fs.writeFile(uri, new TextEncoder().encode(content));
+  };
+
+  await write('FRW/SKILL.md', skillContent);
+
+  const claudeMdUri = vscode.Uri.joinPath(folders[0].uri, 'CLAUDE.md');
+  const claudeMdExists = await vscode.workspace.fs.stat(claudeMdUri).then(() => true, () => false);
+  if (!claudeMdExists) {
+    await vscode.workspace.fs.writeFile(claudeMdUri, new TextEncoder().encode(claudeMdContent));
+  }
+
+  for (const [name, content] of Object.entries(REFERENCES)) {
+    await write(`FRW/${name}`, content);
+  }
+
+}
 
 function* iterateSymbols(symbols: vscode.DocumentSymbol[], selection: any): Iterable<vscode.DocumentSymbol> {
   for (const symbol of symbols) {
@@ -145,6 +181,23 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(toolDisposable);
+
+  const config = vscode.workspace.getConfiguration("mtessFrwBacasable");
+  if (config.get<boolean>("deployClaudeCodeSkill") !== false) {
+    deploySkill();
+  }
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('vscode-mtess-frw-bacasable.init', async () => {
+      const cfg = vscode.workspace.getConfiguration("mtessFrwBacasable");
+      if (cfg.get<boolean>("deployClaudeCodeSkill") === false) {
+        vscode.window.showInformationMessage('FRW: déploiement du skill Claude Code désactivé dans les paramètres.');
+        return;
+      }
+      await deploySkill();
+      vscode.window.showInformationMessage('FRW: skill Claude Code déployé dans .claude/skills/');
+    })
+  );
 }
 
 // this method is called when your extension is deactivated

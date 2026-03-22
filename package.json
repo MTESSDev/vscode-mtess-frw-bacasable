@@ -27,6 +27,10 @@
       {
         "command": "vscode-mtess-frw-bacasable.open",
         "title": "FRW - Ouvrir bac à sable formulaire"
+      },
+      {
+        "command": "vscode-mtess-frw-bacasable.init",
+        "title": "FRW - Initialiser le workspace pour Claude Code"
       }
     ],
     "keybindings": [
@@ -95,6 +99,11 @@
             "Open in the eighth pane",
             "Open in the ninth pane"
           ]
+        },
+        "mtessFrwBacasable.deployClaudeCodeSkill": {
+          "type": "boolean",
+          "default": true,
+          "description": "Déploie automatiquement le skill Claude Code dans .claude/skills/ du workspace à l'ouverture. Désactiver si vous ne souhaitez pas que l'extension modifie votre configuration Claude Code."
         }
       }
     }

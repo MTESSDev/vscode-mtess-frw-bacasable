@@ -33,6 +33,10 @@ const desktopConfig = {
           },
         ],
       },
+      {
+        test: /\.md$/,
+        type: 'asset/source',
+      },
     ],
   },
   devtool: 'nosources-source-map',
@@ -68,6 +72,10 @@ const webConfig = {
             },
           },
         ],
+      },
+      {
+        test: /\.md$/,
+        type: 'asset/source',
       },
     ],
   },

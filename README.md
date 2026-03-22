@@ -23,8 +23,18 @@ Ajouter ces configuration dans le fichier de configuration de votre VS code ou v
   "mtessFrwBacasable.url": "https://formulaires.it.mtess.gouv.qc.ca/form/700000/render",
 
   // Optionnel: Emplacement d'ouverture du panneau de preview
-  "mtessFrwBacasable.pane": "Beside"
+  "mtessFrwBacasable.pane": "Beside",
+
+  // Optionnel: Déploiement du skill Claude Code (défaut: true)
+  "mtessFrwBacasable.deployClaudeCodeSkill": true
 }
+```
+
+### Intégration Claude Code
+
+L'extension déploie automatiquement un **skill Claude Code** dans `.claude/skills/frw-bacasable.md` à l'ouverture du workspace. Ce skill permet à Claude Code de comprendre la structure des formulaires `.form.yml` et de les modifier correctement.
+
+L'extension expose également un **outil de langage** (`mtess-frw-bacasable_preview`) compatible avec tout assistant IA supportant l'API Language Model Tools de VS Code (Claude, GitHub Copilot, etc.) : l'assistant peut déclencher lui-même la prévisualisation dans le bac à sable après avoir modifié un formulaire.
 ```
 
 ### Outils de developpement
