@@ -58,6 +58,7 @@ const webConfig = {
   resolve: {
     extensions: ['.ts', '.js'],
     mainFields: ['browser', 'module', 'main'],
+    fallback: { 'http': false, 'https': false, 'buffer': false },
   },
   module: {
     rules: [

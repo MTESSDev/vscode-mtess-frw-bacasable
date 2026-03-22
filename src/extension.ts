@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { renderHost, renderPlaceholder } from "./host";
 import { getColumnFromPane } from "./pane";
 import claudeMdContent from '../skills/CLAUDE.md';
+import geminiMdContent from '../skills/GEMINI.md';
 import skillContent from '../skills/FRW/SKILL.md';
 import refForm from '../skills/FRW/references/form.md';
 import refBind from '../skills/FRW/references/bind.md';
@@ -33,6 +34,33 @@ async function deploySkill(extensionUri: vscode.Uri) {
     await vscode.workspace.fs.writeFile(claudeMdUri, new TextEncoder().encode(claudeMdContent));
   }
 
+  const geminiMdUri = vscode.Uri.joinPath(rootUri, 'GEMINI.md');
+  const geminiMdExists = await vscode.workspace.fs.stat(geminiMdUri).then(() => true, () => false);
+  if (!geminiMdExists) {
+    await vscode.workspace.fs.writeFile(geminiMdUri, new TextEncoder().encode(geminiMdContent));
+  }
+
+  // Configure .gemini/settings.json with MCP server
+  const geminiSettingsUri = vscode.Uri.joinPath(rootUri, '.gemini', 'settings.json');
+  let geminiSettings: any = {};
+  try {
+    const existing = await vscode.workspace.fs.readFile(geminiSettingsUri);
+    geminiSettings = JSON.parse(new TextDecoder().decode(existing));
+  } catch {
+    // File doesn't exist or isn't valid JSON — start fresh
+  }
+
+  if (!geminiSettings.mcpServers) { geminiSettings.mcpServers = {}; }
+  geminiSettings.mcpServers['frw-bacasable'] = {
+    command: 'node',
+    args: ['.claude/mcp/frw-preview.js'],
+  };
+
+  await vscode.workspace.fs.writeFile(
+    geminiSettingsUri,
+    new TextEncoder().encode(JSON.stringify(geminiSettings, null, 2))
+  );
+
   for (const [name, content] of Object.entries(REFERENCES)) {
     await write(`FRW/${name}`, content);
   }
@@ -47,7 +75,7 @@ async function deploySkill(extensionUri: vscode.Uri) {
     console.warn('FRW: impossible de déployer le serveur MCP:', err.message);
   }
 
-  // Configure .mcp.json at workspace root (Claude Code reads MCP servers from here)
+  // Configure .mcp.json at workspace root (read by Claude Code and other AI tools)
   const mcpJsonUri = vscode.Uri.joinPath(rootUri, '.mcp.json');
   let mcpConfig: any = {};
   try {
@@ -91,6 +119,7 @@ async function deploySkill(extensionUri: vscode.Uri) {
     new TextEncoder().encode(JSON.stringify(settings, null, 2))
   );
 }
+
 
 function* iterateSymbols(symbols: vscode.DocumentSymbol[], selection: any): Iterable<vscode.DocumentSymbol> {
   for (const symbol of symbols) {
@@ -169,6 +198,7 @@ export function activate(context: vscode.ExtensionContext) {
                   });
 
                   panel.webview.html = url ? renderHost(url, base64Text, breadcrumb, showAll) : renderPlaceholder();
+
                   panel.onDidDispose(() => {
                     currentPanel = undefined;
                     configListener.dispose();
@@ -316,13 +346,24 @@ export function activate(context: vscode.ExtensionContext) {
     const triggerUri = vscode.Uri.joinPath(folders[0].uri, '.claude', '.frw-trigger');
     try {
       const bytes = await vscode.workspace.fs.readFile(triggerUri);
-      const filePath = new TextDecoder().decode(bytes).trim();
+      const raw = new TextDecoder().decode(bytes).trim();
+      // Format: "filePath:line" or just "filePath"
+      const colonIdx = raw.lastIndexOf(':');
+      const lineNum = colonIdx > 1 ? parseInt(raw.slice(colonIdx + 1), 10) : NaN;
+      const filePath = (!isNaN(lineNum) && colonIdx > 1) ? raw.slice(0, colonIdx) : raw;
+
       if (filePath) {
-        // Save the document if it's dirty (Claude Code may have just edited it)
         const uri = vscode.Uri.file(filePath);
         const openDoc = vscode.workspace.textDocuments.find(d => d.uri.fsPath === uri.fsPath);
         if (openDoc && openDoc.isDirty) {
           await openDoc.save();
+        }
+        // Position cursor at the changed line for breadcrumb
+        if (!isNaN(lineNum)) {
+          const doc = openDoc ?? await vscode.workspace.openTextDocument(uri);
+          const editor = await vscode.window.showTextDocument(doc, { preserveFocus: true });
+          const pos = new vscode.Position(Math.max(0, lineNum - 1), 0);
+          editor.selection = new vscode.Selection(pos, pos);
         }
       }
       await vscode.commands.executeCommand('vscode-mtess-frw-bacasable.open');
@@ -336,19 +377,19 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(triggerWatcher);
 
   const config = vscode.workspace.getConfiguration("mtessFrwBacasable");
-  if (config.get<boolean>("deployClaudeCodeSkill") !== false) {
+  if (config.get<boolean>("deployAiSkills") !== false) {
     deploySkill(context.extensionUri);
   }
 
   context.subscriptions.push(
     vscode.commands.registerCommand('vscode-mtess-frw-bacasable.init', async () => {
       const cfg = vscode.workspace.getConfiguration("mtessFrwBacasable");
-      if (cfg.get<boolean>("deployClaudeCodeSkill") === false) {
-        vscode.window.showInformationMessage('FRW: déploiement du skill Claude Code désactivé dans les paramètres.');
+      if (cfg.get<boolean>("deployAiSkills") === false) {
+        vscode.window.showInformationMessage('FRW: déploiement des skills IA désactivé dans les paramètres.');
         return;
       }
       await deploySkill(context.extensionUri);
-      vscode.window.showInformationMessage('FRW: skill Claude Code déployé dans .claude/skills/');
+      vscode.window.showInformationMessage('FRW: skills IA déployés (CLAUDE.md, GEMINI.md, .claude/, .gemini/)');
     })
   );
 }

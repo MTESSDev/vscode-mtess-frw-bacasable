@@ -78,6 +78,7 @@ export const renderHost = (url: string, data: string, breadcrumb: string, showAl
       }
 
       function retry() {
+        document.getElementById('loading-overlay').style.display = 'flex';
         document.getElementById('loading-overlay').innerHTML =
           '<div class="spinner"></div><span>Chargement\u2026</span>';
         clearTimeout(timeoutHandle);
@@ -91,7 +92,7 @@ export const renderHost = (url: string, data: string, breadcrumb: string, showAl
       document.getElementById("form").submit();
 
       window.addEventListener("message", (e) => {
-        window.dispatchEvent(new KeyboardEvent('keydown', JSON.parse(e.data)));
+        try { window.dispatchEvent(new KeyboardEvent('keydown', JSON.parse(e.data))); } catch {}
       }, false);
 
     </script>
@@ -104,7 +105,7 @@ export const renderPlaceholder = () => `
 <html>
   <head>
     <style>
-      html, body { 
+      html, body {
         margin: 0;
         padding: 0;
         overflow: hidden;
@@ -132,7 +133,7 @@ export const renderPlaceholder = () => `
     <div class="flex top">
       <div class="instructions">Pour utiliser l'outil MTESS - Formulaires - Bac-à-sable il faut configurer quelques paramètres, e.g.</div>
       <pre>{
-  "mtessFrwBacasable.url": "http://localhost:3000",
+  "mtessFrwBacasable.url": "https://formulaires.it.mtess.gouv.qc.ca/Form/700000/render?debug=true",
   "mtessFrwBacasable.title": "Local Development",
   "mtessFrwBacasable.pane": "Beside"
 }</pre>

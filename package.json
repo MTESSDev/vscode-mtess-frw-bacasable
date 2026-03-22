@@ -5,7 +5,7 @@
   "repository": "https://github.com/MTESSDev/vscode-mtess-frw-bacasable",
   "description": "Configurez vos formulaires avec l'outil du MTESS en temps réel!",
   "icon": "docs/icon-128.png",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "engines": {
     "vscode": "^1.101.0"
   },
@@ -30,7 +30,7 @@
       },
       {
         "command": "vscode-mtess-frw-bacasable.init",
-        "title": "FRW - Initialiser le workspace pour Claude Code"
+        "title": "FRW - Initialiser le workspace pour les assistants IA"
       }
     ],
     "keybindings": [
@@ -67,7 +67,7 @@
       "properties": {
         "mtessFrwBacasable.url": {
           "type": "string",
-          "default": null,
+          "default": "https://formulaires.it.mtess.gouv.qc.ca/form/700000/render?debug=true",
           "description": "URL à utiliser pour produire le rendu."
         },
         "mtessFrwBacasable.pane": {
@@ -100,10 +100,10 @@
             "Open in the ninth pane"
           ]
         },
-        "mtessFrwBacasable.deployClaudeCodeSkill": {
+        "mtessFrwBacasable.deployAiSkills": {
           "type": "boolean",
           "default": true,
-          "description": "Déploie automatiquement le skill Claude Code dans .claude/skills/ du workspace à l'ouverture. Désactiver si vous ne souhaitez pas que l'extension modifie votre configuration Claude Code."
+          "description": "Déploie automatiquement les skills IA (CLAUDE.md, GEMINI.md, .claude/skills/, .gemini/) dans le workspace à l'ouverture. Désactiver si vous ne souhaitez pas que l'extension modifie votre configuration."
         }
       }
     }

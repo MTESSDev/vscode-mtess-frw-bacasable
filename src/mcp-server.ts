@@ -69,6 +69,10 @@ rl.on('line', async (line: string) => {
                   type: 'string',
                   description: 'Chemin absolu vers le fichier .form.yml à prévisualiser',
                 },
+                line: {
+                  type: 'number',
+                  description: 'Numéro de ligne (1-based) de la modification effectuée, pour positionner le breadcrumb sur le bon composant.',
+                },
               },
               required: ['filePath'],
             },
@@ -109,7 +113,7 @@ async function handleToolCall(params: any): Promise<object> {
     return { content: [{ type: 'text', text: `Outil inconnu: ${toolName}` }], isError: true };
   }
 
-  const { filePath } = params.arguments || {};
+  const { filePath, line } = params.arguments || {};
   if (!filePath) {
     return { content: [{ type: 'text', text: 'filePath est requis' }], isError: true };
   }
@@ -130,7 +134,8 @@ async function handleToolCall(params: any): Promise<object> {
   const triggerFile = path.join(workspaceDir, '.claude', '.frw-trigger');
   try {
     fs.mkdirSync(path.dirname(triggerFile), { recursive: true });
-    fs.writeFileSync(triggerFile, filePath, 'utf-8');
+    const triggerContent = line !== undefined ? `${filePath}:${line}` : filePath;
+    fs.writeFileSync(triggerFile, triggerContent, 'utf-8');
   } catch {
     // Non-critical — webview won't refresh but validation still works
   }
