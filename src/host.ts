@@ -65,8 +65,10 @@ export const renderHost = (url: string, data: string, breadcrumb: string, showAl
     <script>
       var TIMEOUT_MS = 30000;
       var timeoutHandle = null;
+      var submitted = false;
 
       function onLoaded() {
+        if (!submitted) return;
         clearTimeout(timeoutHandle);
         document.getElementById('loading-overlay').style.display = 'none';
       }
@@ -89,6 +91,7 @@ export const renderHost = (url: string, data: string, breadcrumb: string, showAl
       document.getElementById("frw-iframe").addEventListener("load", onLoaded);
 
       timeoutHandle = setTimeout(onTimeout, TIMEOUT_MS);
+      submitted = true;
       document.getElementById("form").submit();
 
       window.addEventListener("message", (e) => {

@@ -33,10 +33,13 @@ const desktopConfig = {
           },
         ],
       },
+<<<<<<< HEAD
       {
         test: /\.md$/,
         type: 'asset/source',
       },
+=======
+>>>>>>> origin/master
     ],
   },
   devtool: 'nosources-source-map',
@@ -58,6 +61,7 @@ const webConfig = {
   resolve: {
     extensions: ['.ts', '.js'],
     mainFields: ['browser', 'module', 'main'],
+<<<<<<< HEAD
     fallback: { 'http': false, 'https': false, 'buffer': false },
   },
   module: {
@@ -95,6 +99,8 @@ const mcpServerConfig = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
+=======
+>>>>>>> origin/master
   },
   module: {
     rules: [
@@ -115,4 +121,8 @@ const mcpServerConfig = {
   devtool: 'nosources-source-map',
 };
 
+<<<<<<< HEAD
 module.exports = [desktopConfig, webConfig, mcpServerConfig];
+=======
+module.exports = [desktopConfig, webConfig];
+>>>>>>> origin/master
