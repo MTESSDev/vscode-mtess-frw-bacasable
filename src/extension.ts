@@ -173,12 +173,24 @@ export function activate(context: vscode.ExtensionContext) {
                 const text = new TextDecoder().decode(fileBytes);
                 const base64Text = btoa(unescape(encodeURIComponent(text)));
 
+                // Garde-focus : dès que le webview vole le focus, on le redonne à l'éditeur.
+                // On utilise un événement plutôt qu'un setTimeout pour être réactif peu importe le timing.
+                const docToRestore = editor.document;
+                const colToRestore = editor.viewColumn;
+                const focusGuard = vscode.window.onDidChangeActiveTextEditor(() => {
+                  if (currentPanel?.active) {
+                    focusGuard.dispose();
+                    vscode.window.showTextDocument(docToRestore, { viewColumn: colToRestore, preserveFocus: false });
+                  }
+                });
+                setTimeout(() => focusGuard.dispose(), 2000);
+
                 if (!currentPanel) {
 
                   const panel = (currentPanel = vscode.window.createWebviewPanel(
                     "vscode-mtess-frw-bacasable",
                     title,
-                    column,
+                    { viewColumn: column, preserveFocus: true },
                     {
                       enableCommandUris: true,
                       enableFindWidget: true,
@@ -205,12 +217,7 @@ export function activate(context: vscode.ExtensionContext) {
                   });
                 } else {
                   currentPanel.webview.html = url ? renderHost(url, base64Text, breadcrumb, showAll) : renderPlaceholder();
-
-                  // Reveal ne fonctionne plus avec VS 1.63
-                  // currentPanel.reveal(undefined, true);
                 }
-
-                //vscode.window.activeTextEditor = editor;
               });
             });
         };
@@ -237,11 +244,30 @@ export function activate(context: vscode.ExtensionContext) {
 
         if (filePath) {
           targetUri = vscode.Uri.file(filePath);
-          const doc = await vscode.workspace.openTextDocument(targetUri);
-          const editor = await vscode.window.showTextDocument(doc, { preserveFocus: true });
-          if (line !== undefined) {
-            const position = new vscode.Position(Math.max(0, line - 1), 0);
-            editor.selection = new vscode.Selection(position, position);
+          const existingEditor = vscode.window.visibleTextEditors.find(
+            e => e.document.uri.fsPath === targetUri!.fsPath
+          );
+          if (existingEditor) {
+            if (line !== undefined) {
+              const position = new vscode.Position(Math.max(0, line - 1), 0);
+              existingEditor.selection = new vscode.Selection(position, position);
+              existingEditor.revealRange(new vscode.Range(position, position));
+            }
+          } else {
+            const doc = await vscode.workspace.openTextDocument(targetUri);
+            // Ouvrir dans la colonne opposée au panel preview pour éviter la collision
+            const panelColumn = currentPanel?.viewColumn;
+            const editorColumn = (panelColumn === vscode.ViewColumn.One)
+              ? vscode.ViewColumn.Two
+              : vscode.ViewColumn.One;
+            const editor = await vscode.window.showTextDocument(doc, {
+              preserveFocus: true,
+              viewColumn: editorColumn,
+            });
+            if (line !== undefined) {
+              const position = new vscode.Position(Math.max(0, line - 1), 0);
+              editor.selection = new vscode.Selection(position, position);
+            }
           }
         } else if (line !== undefined) {
           const editor = vscode.window.activeTextEditor;
