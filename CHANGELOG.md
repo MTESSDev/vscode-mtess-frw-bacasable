@@ -1,5 +1,18 @@
 # Change Log
 
+## [1.0.6] - 2026-03-22
+
+### Ajouts
+- Déploiement automatique des skills IA pour Claude et Gemini au démarrage de l'extension
+- Déploiement du skill FRW (`SKILL.md` et références) dans `.claude/skills/FRW/`
+- Déploiement de `CLAUDE.md` et `GEMINI.md` à la racine du workspace
+- Configuration automatique de `.gemini/settings.json` avec le serveur MCP
+- Nouveau paramètre `mtessFrwBacasable.deployAiSkills` pour désactiver le déploiement automatique des skills IA
+- Les skills FRW proviennent désormais d'un sous-module Git externe (`MTESSDev/skills`)
+
+### Modifications
+- Corrections diverses de messages et de gestion des erreurs
+
 ## [1.0.2]
 - Ajout du support de claude AI
 

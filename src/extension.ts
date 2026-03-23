@@ -3,10 +3,10 @@ import { renderHost, renderPlaceholder } from "./host";
 import { getColumnFromPane } from "./pane";
 import claudeMdContent from '../skills/CLAUDE.md';
 import geminiMdContent from '../skills/GEMINI.md';
-import skillContent from '../skills/FRW/SKILL.md';
-import refForm from '../skills/FRW/references/form.md';
-import refBind from '../skills/FRW/references/bind.md';
-import refTransmission from '../skills/FRW/references/transmission.md';
+import skillContent from '../skills-externe/skills/FRW/SKILL.md';
+import refForm from '../skills-externe/skills/FRW/references/form.md';
+import refBind from '../skills-externe/skills/FRW/references/bind.md';
+import refTransmission from '../skills-externe/skills/FRW/references/transmission.md';
 
 const REFERENCES: Record<string, string> = {
   'references/form.md': refForm,

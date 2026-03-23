@@ -1,0 +1,3 @@
+[submodule "skills-externe"]
+	path = skills-externe
+	url = https://github.com/MTESSDev/skills.git
