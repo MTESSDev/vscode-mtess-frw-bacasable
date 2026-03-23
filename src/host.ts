@@ -1,16 +1,53 @@
 
 export const renderHost = (url: string, data: string, breadcrumb: string, showAll: boolean) => `
 <!DOCTYPE html>
+<!-- ${Date.now()} -->
 <html>
   <head>
     <style>
-      html, body, iframe { 
-        margin: 0; 
-        padding: 0; 
-        border: 0; 
-        height: 100vh; 
-        width: 100vw; 
+      html, body, iframe {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        height: 100vh;
+        width: 100vw;
         overflow: hidden;
+      }
+      #loading-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        background: var(--vscode-editor-background, #1e1e1e);
+        color: var(--vscode-editor-foreground, #ccc);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        font-family: sans-serif;
+        font-size: 13px;
+      }
+      .spinner {
+        width: 24px;
+        height: 24px;
+        border: 2px solid var(--vscode-editor-foreground, #ccc);
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .vscode-btn {
+        padding: 0.5rem 1.5rem;
+        cursor: pointer;
+        background: var(--vscode-button-background, #0e639c);
+        color: var(--vscode-button-foreground, #fff);
+        border: none;
+        border-radius: 2px;
+        font-size: 13px;
+        font-family: sans-serif;
+      }
+      .vscode-btn:hover {
+        background: var(--vscode-button-hoverBackground, #1177bb);
       }
     </style>
   </head>
@@ -20,12 +57,45 @@ export const renderHost = (url: string, data: string, breadcrumb: string, showAl
     <input type="hidden" name="breadcrumb" id="breadcrumb" value="${breadcrumb}">
   </form>
 
-    <iframe name="frw-iframe" src="about:blank"></iframe>
+    <iframe name="frw-iframe" id="frw-iframe" src="about:blank"></iframe>
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <span>Chargement…</span>
+    </div>
     <script>
-    
+      var TIMEOUT_MS = 30000;
+      var timeoutHandle = null;
+      var submitted = false;
+
+      function onLoaded() {
+        if (!submitted) return;
+        clearTimeout(timeoutHandle);
+        document.getElementById('loading-overlay').style.display = 'none';
+      }
+
+      function onTimeout() {
+        document.getElementById('loading-overlay').innerHTML =
+          '<span>Le serveur n\\'a pas répondu.</span>' +
+          '<button class="vscode-btn" onclick="retry()">R\u00e9essayer</button>';
+      }
+
+      function retry() {
+        document.getElementById('loading-overlay').style.display = 'flex';
+        document.getElementById('loading-overlay').innerHTML =
+          '<div class="spinner"></div><span>Chargement\u2026</span>';
+        clearTimeout(timeoutHandle);
+        timeoutHandle = setTimeout(onTimeout, TIMEOUT_MS);
+        document.getElementById("form").submit();
+      }
+
+      document.getElementById("frw-iframe").addEventListener("load", onLoaded);
+
+      timeoutHandle = setTimeout(onTimeout, TIMEOUT_MS);
+      submitted = true;
       document.getElementById("form").submit();
+
       window.addEventListener("message", (e) => {
-        window.dispatchEvent(new KeyboardEvent('keydown', JSON.parse(e.data)));
+        try { window.dispatchEvent(new KeyboardEvent('keydown', JSON.parse(e.data))); } catch {}
       }, false);
 
     </script>
@@ -38,7 +108,7 @@ export const renderPlaceholder = () => `
 <html>
   <head>
     <style>
-      html, body { 
+      html, body {
         margin: 0;
         padding: 0;
         overflow: hidden;
@@ -66,7 +136,7 @@ export const renderPlaceholder = () => `
     <div class="flex top">
       <div class="instructions">Pour utiliser l'outil MTESS - Formulaires - Bac-à-sable il faut configurer quelques paramètres, e.g.</div>
       <pre>{
-  "mtessFrwBacasable.url": "http://localhost:3000",
+  "mtessFrwBacasable.url": "https://formulaires.it.mtess.gouv.qc.ca/Form/700000/render?debug=true",
   "mtessFrwBacasable.title": "Local Development",
   "mtessFrwBacasable.pane": "Beside"
 }</pre>

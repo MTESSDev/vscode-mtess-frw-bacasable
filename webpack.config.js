@@ -33,6 +33,13 @@ const desktopConfig = {
           },
         ],
       },
+<<<<<<< HEAD
+      {
+        test: /\.md$/,
+        type: 'asset/source',
+      },
+=======
+>>>>>>> origin/master
     ],
   },
   devtool: 'nosources-source-map',
@@ -54,6 +61,46 @@ const webConfig = {
   resolve: {
     extensions: ['.ts', '.js'],
     mainFields: ['browser', 'module', 'main'],
+<<<<<<< HEAD
+    fallback: { 'http': false, 'https': false, 'buffer': false },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.md$/,
+        type: 'asset/source',
+      },
+    ],
+  },
+  devtool: 'nosources-source-map',
+};
+
+/** @type {import('webpack').Configuration} */
+const mcpServerConfig = {
+  target: 'node',
+  mode: 'none',
+  entry: './src/mcp-server.ts',
+  output: {
+    path: path.resolve(__dirname, 'out'),
+    filename: 'mcp-server.js',
+    libraryTarget: 'commonjs2',
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
+=======
+>>>>>>> origin/master
   },
   module: {
     rules: [
@@ -74,4 +121,8 @@ const webConfig = {
   devtool: 'nosources-source-map',
 };
 
+<<<<<<< HEAD
+module.exports = [desktopConfig, webConfig, mcpServerConfig];
+=======
 module.exports = [desktopConfig, webConfig];
+>>>>>>> origin/master

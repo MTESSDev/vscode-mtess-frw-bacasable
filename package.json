@@ -1,13 +1,13 @@
 {
   "name": "vscode-mtess-frw-bacasable",
-  "displayName": "MTESS - Formulaires bac-a-sable",
+  "displayName": "MTESS - Formulaires bac à sable",
   "publisher": "mtess",
-  "repository": "https://github.com/TrucsPES/vscode-mtess-frw-bacasable",
+  "repository": "https://github.com/MTESSDev/vscode-mtess-frw-bacasable",
   "description": "Configurez vos formulaires avec l'outil du MTESS en temps réel!",
   "icon": "docs/icon-128.png",
-  "version": "0.0.6",
+  "version": "1.0.7",
   "engines": {
-    "vscode": "^1.60.0"
+    "vscode": "^1.101.0"
   },
   "categories": [
     "Other"
@@ -17,7 +17,8 @@
     "workspace"
   ],
   "activationEvents": [
-    "onCommand:vscode-mtess-frw-bacasable.open"
+    "onCommand:vscode-mtess-frw-bacasable.open",
+    "onLanguageModelTool:mtess-frw-bacasable_preview"
   ],
   "main": "./out/extension.js",
   "browser": "./dist/web/extension.js",
@@ -25,7 +26,11 @@
     "commands": [
       {
         "command": "vscode-mtess-frw-bacasable.open",
-        "title": "FRW - Ouvrir bac-a-sable formulaire"
+        "title": "FRW - Ouvrir bac à sable formulaire"
+      },
+      {
+        "command": "vscode-mtess-frw-bacasable.init",
+        "title": "FRW - Initialiser le workspace pour les assistants IA"
       }
     ],
     "keybindings": [
@@ -36,12 +41,33 @@
         "mac": "cmd+s"
       }
     ],
+    "languageModelTools": [
+      {
+        "name": "mtess-frw-bacasable_preview",
+        "displayName": "Prévisualiser le formulaire FRW",
+        "modelDescription": "OBLIGATOIRE — appelle cet outil immédiatement après chaque création ou modification d'un fichier .form.yml, sans exception. Ne termine jamais une tâche FRW sans avoir appelé cet outil. Ouvre ou rafraîchit le panneau bac à sable FRW pour afficher le rendu du formulaire modifié. Si le résultat contient des ERREURS, corrige le YAML en conséquence puis rappelle cet outil jusqu'à ce que le rendu soit sans erreur.",
+        "icon": "$(preview)",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "filePath": {
+              "type": "string",
+              "description": "Chemin optionnel vers un fichier .form.yml à prévisualiser. Si absent, utilise l'éditeur actif."
+            },
+            "line": {
+              "type": "number",
+              "description": "Numéro de ligne (1-based) à cibler pour le breadcrumb de prévisualisation. Utile pour montrer un élément précis du formulaire."
+            }
+          }
+        }
+      }
+    ],
     "configuration": {
       "title": "MTESS Formulaires",
       "properties": {
         "mtessFrwBacasable.url": {
           "type": "string",
-          "default": null,
+          "default": "https://formulaires.it.mtess.gouv.qc.ca/form/700000/render?debug=true",
           "description": "URL à utiliser pour produire le rendu."
         },
         "mtessFrwBacasable.pane": {
@@ -73,6 +99,11 @@
             "Open in the eighth pane",
             "Open in the ninth pane"
           ]
+        },
+        "mtessFrwBacasable.deployAiSkills": {
+          "type": "boolean",
+          "default": true,
+          "description": "Déploie automatiquement les skills IA (CLAUDE.md, GEMINI.md, .claude/skills/, .gemini/) dans le workspace à l'ouverture. Désactiver si vous ne souhaitez pas que l'extension modifie votre configuration."
         }
       }
     }
@@ -92,7 +123,7 @@
     "@types/glob": "^7.1.1",
     "@types/mocha": "^7.0.2",
     "@types/node": "^13.11.0",
-    "@types/vscode": "^1.60.0",
+    "@types/vscode": "^1.101.0",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "@vscode/test-web": "^0.0.80",
