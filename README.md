@@ -25,14 +25,14 @@ Ajouter ces configuration dans le fichier de configuration de votre VS code ou v
   // Optionnel: Emplacement d'ouverture du panneau de preview
   "mtessFrwBacasable.pane": "Beside",
 
-  // Optionnel: Déploiement des skills IA (défaut: true)
-  "mtessFrwBacasable.deployAiSkills": true
+  // Optionnel: Déploiement des skills IA (défaut: false)
+  "mtessFrwBacasable.deployAiSkills": false
 }
 ```
 
 ### Intégration avec les assistants IA
 
-L'extension déploie automatiquement au premier lancement les fichiers nécessaires pour que les assistants IA comprennent le projet :
+Si l'option est activée, l'extension déploie automatiquement au premier lancement les fichiers nécessaires pour que les assistants IA comprennent le projet :
 
 - **`CLAUDE.md`** et **`.claude/skills/`** — instructions et skill pour Claude Code
 - **`GEMINI.md`** et **`.gemini/settings.json`** — instructions et configuration MCP pour Gemini CLI
