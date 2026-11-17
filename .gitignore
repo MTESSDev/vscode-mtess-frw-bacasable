@@ -5,3 +5,6 @@ node_modules
 *.vsix
 .DS_Store
 .claude/settings.local.json
+/.vs
+# Généré par scripts/sync-skills.js
+/skills/frw/
