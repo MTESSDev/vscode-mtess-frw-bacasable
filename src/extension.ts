@@ -442,8 +442,14 @@ export function activate(context: vscode.ExtensionContext) {
   const config = vscode.workspace.getConfiguration("mtessFrwBacasable");
   // Opt-in: GitHub Copilot reçoit le skill FRW via `chatSkills` (package.json),
   // ce déploiement ne sert qu'à Claude Code.
+  // L'extension démarre dans tous les workspaces (onStartupFinished): on ne déploie
+  // automatiquement que dans ceux qui contiennent des formulaires FRW.
   if (config.get<boolean>("deployAiSkills") === true) {
-    deploySkill(context.extensionUri);
+    vscode.workspace.findFiles('**/*.form.yml', '**/node_modules/**', 1).then(files => {
+      if (files.length > 0) {
+        deploySkill(context.extensionUri);
+      }
+    });
   }
 
   context.subscriptions.push(

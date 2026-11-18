@@ -5,7 +5,7 @@
   "repository": "https://github.com/MTESSDev/vscode-mtess-frw-bacasable",
   "description": "Configurez vos formulaires avec l'outil du MTESS en temps réel!",
   "icon": "docs/icon-128.png",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "engines": {
     "vscode": "^1.101.0"
   },
@@ -117,7 +117,7 @@
         "mtessFrwBacasable.deployAiSkills": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Déploie le skill FRW de **Claude Code** dans le workspace (`.claude/skills/frw/`) à l'ouverture, avec la configuration de l'outil de prévisualisation (`.mcp.json`, `.mtess/mcp/` et l'autorisation dans `.claude/settings.json`). Inutile pour **GitHub Copilot**, qui reçoit le skill FRW directement de l'extension. Désactivé par défaut: l'extension ne modifie pas votre workspace sans votre accord. La commande « FRW - Initialiser le workspace pour Claude Code » permet de déployer manuellement."
+          "markdownDescription": "Déploie le skill FRW de **Claude Code** dans le workspace (`.claude/skills/frw/`) à l'ouverture d'un workspace contenant des fichiers `*.form.yml`, avec la configuration de l'outil de prévisualisation (`.mcp.json`, `.mtess/mcp/` et l'autorisation dans `.claude/settings.json`). Inutile pour **GitHub Copilot**, qui reçoit le skill FRW directement de l'extension. Désactivé par défaut: l'extension ne modifie pas votre workspace sans votre accord. La commande « FRW - Initialiser le workspace pour Claude Code » permet de déployer manuellement."
         }
       }
     }

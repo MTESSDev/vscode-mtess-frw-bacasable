@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.1.1] - 2026-11-17
+
+### Corrections
+- Le déploiement automatique (`deployAiSkills`) ne s'exécute plus que dans les workspaces contenant des fichiers `*.form.yml`: depuis l'activation au démarrage, il se faisait dans n'importe quel dépôt
+
 ## [1.1.0] - 2026-11-16
 
 ### Ajouts
